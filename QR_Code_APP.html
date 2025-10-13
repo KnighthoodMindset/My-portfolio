@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Reader</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #8EC5FC, #690cc0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .scanner-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 25px;
+    width: 330px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(58, 192, 210, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  #reader {
+    width: 280px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    margin-bottom: 20px;
+  }
+
+  #result {
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    word-break: break-word;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s;
+  }
+
+  #result.success {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.4);
+    color: #c8facc;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<h1> QR Code Reader</h1>
+
+<div class="scanner-card">
+  <div id="reader"></div>
+  <div id="result">Scanned result will appear here</div>
+</div>
+
+<!-- HTML5 QR Code Library -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<script>
+function onScanSuccess(decodedText, decodedResult) {
+    const resultBox = document.getElementById("result");
+    resultBox.innerText = `✅ ${decodedText}`;
+    resultBox.classList.add("success");
+}
+
+function onScanError(errorMessage) {
+    console.log(`Scan error: ${errorMessage}`);
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader",
+    { fps: 10, qrbox: 250 },
+    false
+);
+html5QrcodeScanner.render(onScanSuccess, onScanError);
+</script>
+
+</body>
+</html>
